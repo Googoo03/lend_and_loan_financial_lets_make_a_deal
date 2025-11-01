@@ -1,4 +1,4 @@
-import Logo from "./assets/LetsMakeADealLogo.jpg";
+import Logo from "../assets/LetsMakeADealLogo.jpg";
 
 function Title() {
   return (
