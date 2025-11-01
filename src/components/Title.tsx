@@ -4,7 +4,12 @@ function Title() {
   return (
     <>
       <div>
-        <img src={Logo} alt="Lets Make a Deal Logo" width={"100%"} />
+        <img
+          className={"logo"}
+          src={Logo}
+          alt="Lets Make a Deal Logo"
+          width={"100%"}
+        />
         <h1>Lets Make a Deal Sample Title</h1>
       </div>
     </>
