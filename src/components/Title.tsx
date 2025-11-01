@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
-import Logo from "../assets/LetsMakeADealLogo.jpg";
+import Logo from "../assets/LetsMakeADealLogo.png";
+import Host from "../assets/Lets-Make-A-Deal-Host.png";
 
 interface TitleProps {
   clickLink: string;
@@ -21,6 +22,7 @@ function Title({ clickLink }: TitleProps) {
           width={"100%"}
           onClick={handleClick}
         />
+        <img className={"host"} src={Host} alt="Hunk" />
         <h1>Lets Make a Deal Sample Title</h1>
       </div>
     </>
