@@ -5,9 +5,7 @@ interface DoorProps {
 function Door({ number }: DoorProps) {
   return (
     <>
-      <div>
-        <h2>Door {number}</h2>
-      </div>
+      <h2>Door {number}</h2>
     </>
   );
 }

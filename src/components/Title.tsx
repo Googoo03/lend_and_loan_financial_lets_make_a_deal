@@ -14,7 +14,7 @@ function Title({ clickLink }: TitleProps) {
 
   return (
     <>
-      <div>
+      <div className="center-horizontal">
         <img
           className={"logo"}
           src={Logo}
