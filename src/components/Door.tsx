@@ -1,32 +1,40 @@
 import Curtain from "../assets/Curtain.png";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 
 interface DoorProps {
   number: number;
   action?: () => void;
-  onHover?: () => void;
+  onClick?: () => void;
 }
 
-function Door({ number }: DoorProps) {
-  const [visible, setVisible] = useState(false);
+function Door({ number, onClick }: DoorProps) {
+  const [visible, setVisible] = useState(true);
   return (
     <>
-      {visible && (
-        <motion.img
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ y: 100, opacity: 0 }}
-          whileHover={{ y: 50 }}
-          border-radius={"25px"}
-          height={"100%"}
-          src={Curtain}
-          alt={"Door" + number}
-          onClick={() => {
-            setVisible(false);
-          }}
-        />
-      )}
+      <AnimatePresence>
+        {visible && (
+          <motion.div
+            className="rounded-3 overflow-hidden d-inline-block"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ y: -500, opacity: 0 }}
+            whileHover={{ y: -50 }}
+          >
+            <motion.img
+              src={Curtain}
+              alt={"Door " + number}
+              className="img-fluid"
+              style={{ cursor: "pointer" }}
+              onClick={() => {
+                setVisible(false);
+                onClick?.();
+              }}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
+      {!visible && <div>Prize {number}</div>}
     </>
   );
 }

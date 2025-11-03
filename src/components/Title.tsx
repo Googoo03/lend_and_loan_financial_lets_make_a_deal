@@ -19,7 +19,7 @@ function Title({ clickLink }: TitleProps) {
         <motion.img
           initial={{ scale: 0, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
-          whileHover={{ scale: 1.1 }}
+          whileHover={{ scale: 1.05 }}
           className={"logo"}
           src={Logo}
           alt="Lets Make a Deal Logo"
