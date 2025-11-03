@@ -1,3 +1,5 @@
+import Curtain from "../assets/Curtain.png";
+
 interface DoorProps {
   number: number;
 }
@@ -5,7 +7,7 @@ interface DoorProps {
 function Door({ number }: DoorProps) {
   return (
     <>
-      <h2>Door {number}</h2>
+      <img src={Curtain} alt={"Door" + number} />
     </>
   );
 }

@@ -23,7 +23,6 @@ function Title({ clickLink }: TitleProps) {
           onClick={handleClick}
         />
         <img className={"host"} src={Host} alt="Hunk" />
-        <h1>Lets Make a Deal Sample Title</h1>
       </div>
     </>
   );
