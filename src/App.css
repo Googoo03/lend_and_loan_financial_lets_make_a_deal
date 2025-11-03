@@ -10,9 +10,8 @@
   position: absolute;
   width: 80%;
   height: 80%;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
+  left:0;
+  bottom:0;
   z-index: 1;
 }
 .logo:hover {
