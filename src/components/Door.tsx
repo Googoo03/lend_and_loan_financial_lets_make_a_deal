@@ -8,7 +8,7 @@ interface DoorProps {
   onHover?: () => void;
 }
 
-function Door({ number, action }: DoorProps) {
+function Door({ number }: DoorProps) {
   const [visible, setVisible] = useState(false);
   return (
     <>
