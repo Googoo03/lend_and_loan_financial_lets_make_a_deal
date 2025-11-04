@@ -1,28 +1,37 @@
 import { put } from "@vercel/blob";
+import formidable from "formidable";
+import fs from "fs";
 
-export default async function handler(req, res) {
-  if (req.method !== "POST") {
-    return res.status(405).json({ error: "Method not allowed" });
-  }
+export const config = {
+  api: {
+    bodyParser: false, // if your framework would normally parse bodies
+  },
+};
 
-  try {
-    const formData = await req.formData();
-    const name = formData.get("name");
-    const imageFile = formData.get("image");
+export default function handler(req, res) {
+  if (req.method !== "POST") return res.status(405).json({ error: "Method not allowed" });
 
-    if (!name || !imageFile) {
-      return res.status(400).json({ error: "Missing name or image" });
+  const form = new formidable.IncomingForm();
+  form.parse(req, async (err, fields, files) => {
+    if (err) {
+      console.error("Form parse error:", err);
+      return res.status(500).json({ error: "Form parse error" });
     }
 
-    // Upload to Vercel Blob
-    const blob = await put(`${name}.png`, imageFile, {
-      contentType: "image/png",
-      access: "public",
-    });
+    const name = fields.name;
+    const imageFile = files.image;
+    if (!name || !imageFile) return res.status(400).json({ error: "Missing name or image" });
 
-    res.status(200).json({ success: true, blobUrl: blob.url });
-  } catch (error) {
-    console.error("Upload error:", error);
-    res.status(500).json({ error: "Upload failed", details: error.message });
-  }
+    try {
+      const stream = fs.createReadStream(imageFile.filepath);
+      const blob = await put(`${name}.png`, stream, {
+        contentType: imageFile.mimetype || "image/png",
+        access: "public",
+      });
+      return res.status(200).json({ success: true, blobUrl: blob.url });
+    } catch (uploadErr) {
+      console.error("Upload error:", uploadErr);
+      return res.status(500).json({ error: "Upload failed", details: uploadErr.message });
+    }
+  });
 }
