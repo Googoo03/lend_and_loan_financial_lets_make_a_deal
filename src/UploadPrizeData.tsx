@@ -11,7 +11,7 @@ async function uploadPrizeData(prize: PrizeDataProps) {
 
     const formData = new FormData();
     formData.append("name", prize.prizeName);
-    formData.append("image", blob, prize.prizeName + ".png");
+    formData.append("image", blob, prize.prizeImage);
 
     const res = await fetch("/api/upload", {
       method: "POST",

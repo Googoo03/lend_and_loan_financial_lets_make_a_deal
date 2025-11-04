@@ -1,12 +1,4 @@
 import { put } from "@vercel/blob";
-import formidable from 'formidable';
-import { createReadStream } from 'fs';
-
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
 
 export default async function handler(req, res) {
   if (req.method !== "POST") {
@@ -14,22 +6,17 @@ export default async function handler(req, res) {
   }
 
   try {
-    const form = formidable({});
-    
-    const [fields, files] = await form.parse(req);
-    const name = fields.name?.[0];
-    const imageFile = files.image?.[0];
+    const formData = await req.formData();
+    const name = formData.get("name");
+    const imageFile = formData.get("image");
 
     if (!name || !imageFile) {
       return res.status(400).json({ error: "Missing name or image" });
     }
 
-    // Create a read stream from the uploaded file
-    const stream = createReadStream(imageFile.filepath);
-    
     // Upload to Vercel Blob
-    const blob = await put(`${name}.png`, stream, {
-      contentType: imageFile.mimetype || "image/png",
+    const blob = await put(`${name}.png`, imageFile, {
+      contentType: "image/png",
       access: "public",
     });
 
