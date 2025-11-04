@@ -1,13 +1,17 @@
 interface PrizeDataProps {
   prizeName: string;
-  prizeImage: File | Blob;
+  prizeImage: string; // URL from imported asset
 }
 
 async function uploadPrizeData(prize: PrizeDataProps) {
   try {
+    // Fetch the image from the Vite-imported URL
+    const response = await fetch(prize.prizeImage);
+    const blob = await response.blob();
+
     const formData = new FormData();
     formData.append("name", prize.prizeName);
-    formData.append("image", prize.prizeImage);
+    formData.append("image", blob, prize.prizeName + ".png");
 
     const res = await fetch("/api/upload", {
       method: "POST",

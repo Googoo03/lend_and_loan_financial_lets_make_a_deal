@@ -4,6 +4,7 @@ import Title from "./components/Title.tsx";
 import "./App.css";
 import { useState, useEffect } from "react";
 import uploadPrizeData from "./UploadPrizeData.tsx";
+import Curtain from "./assets/Curtain.png";
 
 function App() {
   const [uploaded, setuploaded] = useState(false);
@@ -12,14 +13,9 @@ function App() {
     const uploadImage = async () => {
       if (!uploaded) {
         try {
-          // Fetch the image file first
-          const response = await fetch("/src/assets/Curtain.png");
-          const blob = await response.blob();
-          const file = new File([blob], "Curtain.png", { type: "image/png" });
-
           await uploadPrizeData({
             prizeName: "Curtain",
-            prizeImage: file,
+            prizeImage: Curtain, // This is now the imported image URL
           });
           setuploaded(true);
         } catch (error) {
