@@ -1,8 +1,10 @@
 import { put } from "@vercel/blob";
+import formidable from 'formidable';
+import { createReadStream } from 'fs';
 
 export const config = {
   api: {
-    bodyParser: false, // since we'll handle file data manually
+    bodyParser: false,
   },
 };
 
@@ -12,38 +14,28 @@ export default async function handler(req, res) {
   }
 
   try {
-    const formData = await new Promise((resolve, reject) => {
-      const chunks = [];
-      req.on("data", (chunk) => chunks.push(chunk));
-      req.on("end", () => {
-        const buffer = Buffer.concat(chunks);
-        resolve(buffer);
-      });
-      req.on("error", reject);
-    });
+    const form = formidable({});
+    
+    const [fields, files] = await form.parse(req);
+    const name = fields.name?.[0];
+    const imageFile = files.image?.[0];
 
-    // Parse multipart/form-data
-    const boundary = req.headers["content-type"].split("boundary=")[1];
-    const parts = formData.toString().split(`--${boundary}`);
+    if (!name || !imageFile) {
+      return res.status(400).json({ error: "Missing name or image" });
+    }
 
-    // Extract name and image buffer
-    const nameMatch = parts.find((p) => p.includes('name="name"'));
-    const imageMatch = parts.find((p) => p.includes('name="image"'));
-
-    const name = nameMatch?.split("\r\n\r\n")[1]?.trim();
-    const imageBase64 = imageMatch?.split("\r\n\r\n")[1]?.split("\r\n--")[0];
-
-    const imageBuffer = Buffer.from(imageBase64, "binary");
-
-    // Upload to blob storage
-    const blob = await put(`${name}.png`, imageBuffer, {
-      contentType: "image/png",
+    // Create a read stream from the uploaded file
+    const stream = createReadStream(imageFile.filepath);
+    
+    // Upload to Vercel Blob
+    const blob = await put(`${name}.png`, stream, {
+      contentType: imageFile.mimetype || "image/png",
       access: "public",
     });
 
     res.status(200).json({ success: true, blobUrl: blob.url });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Upload failed" });
+    console.error("Upload error:", error);
+    res.status(500).json({ error: "Upload failed", details: error.message });
   }
 }
