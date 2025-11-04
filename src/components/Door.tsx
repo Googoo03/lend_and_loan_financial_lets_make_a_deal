@@ -4,11 +4,12 @@ import { useState } from "react";
 
 interface DoorProps {
   number: number;
+  canPickPrize: boolean;
   action?: () => void;
   onClick?: () => void;
 }
 
-function Door({ number, onClick }: DoorProps) {
+function Door({ number, onClick, canPickPrize }: DoorProps) {
   const [visible, setVisible] = useState(true);
   return (
     <>
@@ -27,6 +28,7 @@ function Door({ number, onClick }: DoorProps) {
               className="img-fluid"
               style={{ cursor: "pointer" }}
               onClick={() => {
+                if (!canPickPrize) return;
                 setVisible(false);
                 onClick?.();
               }}

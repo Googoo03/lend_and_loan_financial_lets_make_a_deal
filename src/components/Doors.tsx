@@ -69,6 +69,7 @@ function Doors() {
           <div className="col">
             <Door
               number={pickPrize ? 1 : 0}
+              canPickPrize={!pickPrize}
               onClick={() => {
                 setPickPrize(true);
                 setPrizeName("Car");
@@ -78,6 +79,7 @@ function Doors() {
           <div className="col">
             <Door
               number={2}
+              canPickPrize={!pickPrize}
               onClick={() => {
                 setPickPrize(true);
               }}
@@ -86,6 +88,7 @@ function Doors() {
           <div className="col">
             <Door
               number={3}
+              canPickPrize={!pickPrize}
               onClick={() => {
                 setPickPrize(true);
               }}
