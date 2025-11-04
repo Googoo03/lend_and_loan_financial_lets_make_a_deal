@@ -2,6 +2,9 @@ import { put } from "@vercel/blob";
 import formidable from "formidable";
 import fs from "fs";
 
+// Get the token from your custom environment variable
+const token = process.env.LNLLMAD_READ_WRITE_TOKEN;
+
 export const config = {
   api: {
     bodyParser: false, // if your framework would normally parse bodies
@@ -9,6 +12,12 @@ export const config = {
 };
 
 export default function handler(req, res) {
+  // Debug: check if token exists (remove this after debugging)
+  console.log('Environment check:', {
+    hasToken: !!process.env.BLOB_READ_WRITE_TOKEN,
+    hasCustomToken: !!process.env.LNLLMAD_READ_WRITE_TOKEN
+  });
+
   if (req.method !== "POST") return res.status(405).json({ error: "Method not allowed" });
 
   const form = formidable({multiples: false});
@@ -38,6 +47,7 @@ export default function handler(req, res) {
           const blob = await put(`${name}.png`, buffer, {
             contentType: fetched.headers.get("content-type") || "image/png",
             access: "public",
+            token: token,
           });
           return res.status(200).json({ success: true, blobUrl: blob.url });
         } catch (err) {
@@ -58,6 +68,7 @@ export default function handler(req, res) {
         const blob = await put(`${name}.png`, stream, {
           contentType: imageEntry.mimetype || imageEntry.mimetype || "image/png",
           access: "public",
+          token: token,
         });
         return res.status(200).json({ success: true, blobUrl: blob.url });
       }
@@ -68,6 +79,7 @@ export default function handler(req, res) {
         const blob = await put(`${name}.png`, stream, {
           contentType: imageEntry.mimetype || "image/png",
           access: "public",
+          token: token,
         });
         return res.status(200).json({ success: true, blobUrl: blob.url });
       }
@@ -78,6 +90,7 @@ export default function handler(req, res) {
         const blob = await put(`${name}.png`, buffer, {
           contentType: imageEntry.mimetype || "image/png",
           access: "public",
+          token: token,
         });
         return res.status(200).json({ success: true, blobUrl: blob.url });
       }
