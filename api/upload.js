@@ -11,7 +11,7 @@ export const config = {
 export default function handler(req, res) {
   if (req.method !== "POST") return res.status(405).json({ error: "Method not allowed" });
 
-  const form = new formidable.IncomingForm();
+  const form = new formidable({multiples: false});
   form.parse(req, async (err, fields, files) => {
     if (err) {
       console.error("Form parse error:", err);
