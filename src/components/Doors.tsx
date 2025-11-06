@@ -204,7 +204,7 @@ function Doors() {
                 setPrizeName(prizeNames ? prizeNames[1] : "");
               }}
             />
-            {randomPrize && pickIndex[0] && <Prize url={randomPrize[1].url} />}
+            {randomPrize && pickIndex[0] && <Prize url={randomPrize[0].url} />}
           </div>
           <div className="col flex flex-col items-center justify-center">
             <Door
@@ -218,7 +218,7 @@ function Doors() {
                 setPrizeName(prizeNames ? prizeNames[2] : "");
               }}
             />
-            {randomPrize && pickIndex[1] && <Prize url={randomPrize[2].url} />}
+            {randomPrize && pickIndex[1] && <Prize url={randomPrize[1].url} />}
           </div>
           <div className="col flex flex-col items-center justify-center">
             <Door
@@ -232,7 +232,7 @@ function Doors() {
                 setPrizeName(prizeNames ? prizeNames[3] : "");
               }}
             />
-            {randomPrize && pickIndex[2] && <Prize url={randomPrize[3].url} />}
+            {randomPrize && pickIndex[2] && <Prize url={randomPrize[2].url} />}
           </div>
         </div>
       </div>
