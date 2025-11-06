@@ -12,6 +12,7 @@ export default function Prize({ url }: PrizeProps) {
       <motion.div
         initial={{ scale: 0 }}
         animate={{ scale: 1 }}
+        style={{ height: "100%" }}
         className="rounded-3 overflow-hidden d-inline-block"
       >
         <img className="img-fluid" src={url} alt="Random prize" />

@@ -102,7 +102,7 @@ function Doors() {
       )}
       <div className="container text-center z-index-1">
         <div className="row">
-          <div className="col">
+          <div className="col flex flex-col items-center justify-center">
             <Door
               number={pickPrize ? 1 : 0}
               canPickPrize={!pickPrize}
@@ -116,7 +116,7 @@ function Doors() {
               <Prize url={randomPrize[1].url} />
             )}
           </div>
-          <div className="col">
+          <div className="col flex flex-col items-center justify-center">
             <Door
               number={2}
               canPickPrize={!pickPrize}
@@ -130,7 +130,7 @@ function Doors() {
               <Prize url={randomPrize[2].url} />
             )}
           </div>
-          <div className="col">
+          <div className="col flex flex-col items-center justify-center">
             <Door
               number={3}
               canPickPrize={!pickPrize}
