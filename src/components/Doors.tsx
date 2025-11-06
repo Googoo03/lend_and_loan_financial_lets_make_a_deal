@@ -1,12 +1,20 @@
 import Door from "./Door";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import Prize from "./Prize";
 
 function Doors() {
   const [pickPrize, setPickPrize] = useState(false);
-  const [prizeName, setPrizeName] = useState("");
+  const [pickIndex, setPickIndex] = useState(-1);
+  const [prizeName, setPrizeName] = useState<string | undefined>("");
+  const [randomPrize, setRandomPrize] = useState<
+    | {
+        url: string;
+        pathname: string;
+      }[]
+    | null
+  >(null);
 
   const navigate = useNavigate();
   const handleClick = () => {
@@ -14,6 +22,23 @@ function Doors() {
   };
 
   const pickPrizeTransition = { delay: 2 };
+  //Define the 3 prizes
+  //show whichever one when the door is clicked
+  //set prize name accordingly
+  useEffect(() => {
+    async function fetchRandomPrize() {
+      const res = await fetch("/api/prizes/list");
+      const data = await res.json();
+      console.log(data);
+
+      if (data.prizes.length > 0) {
+        setRandomPrize(data.prizes);
+      }
+      console.log("Fetched prizes:", data.blobs);
+    }
+
+    fetchRandomPrize();
+  }, []);
 
   return (
     <>
@@ -73,10 +98,15 @@ function Doors() {
               canPickPrize={!pickPrize}
               onClick={() => {
                 setPickPrize(true);
-                setPrizeName("Car");
+                setPickIndex(0);
+                setPrizeName(
+                  randomPrize ? randomPrize[1].pathname.split("/").pop() : ""
+                );
               }}
             />
-            <Prize />
+            {randomPrize && pickPrize && pickIndex === 0 && (
+              <Prize url={randomPrize[1].url} />
+            )}
           </div>
           <div className="col">
             <Door
@@ -84,8 +114,15 @@ function Doors() {
               canPickPrize={!pickPrize}
               onClick={() => {
                 setPickPrize(true);
+                setPickIndex(1);
+                setPrizeName(
+                  randomPrize ? randomPrize[1].pathname.split("/").pop() : ""
+                );
               }}
             />
+            {randomPrize && pickPrize && pickIndex === 1 && (
+              <Prize url={randomPrize[2].url} />
+            )}
           </div>
           <div className="col">
             <Door
@@ -93,8 +130,15 @@ function Doors() {
               canPickPrize={!pickPrize}
               onClick={() => {
                 setPickPrize(true);
+                setPickIndex(2);
+                setPrizeName(
+                  randomPrize ? randomPrize[1].pathname.split("/").pop() : ""
+                );
               }}
             />
+            {randomPrize && pickPrize && pickIndex === 2 && (
+              <Prize url={randomPrize[3].url} />
+            )}
           </div>
         </div>
       </div>
