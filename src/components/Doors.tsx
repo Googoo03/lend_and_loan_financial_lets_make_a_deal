@@ -2,6 +2,7 @@ import Door from "./Door";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import Prize from "./Prize";
 
 function Doors() {
   const [pickPrize, setPickPrize] = useState(false);
@@ -75,6 +76,7 @@ function Doors() {
                 setPrizeName("Car");
               }}
             />
+            <Prize />
           </div>
           <div className="col">
             <Door

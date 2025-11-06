@@ -2,13 +2,13 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Doors from "./components/Doors.tsx";
 import Title from "./components/Title.tsx";
 import "./App.css";
-import { useState, useEffect } from "react";
-import uploadPrizeData from "./UploadPrizeData.tsx";
-import Curtain from "./assets/Curtain.png";
+//import { useState, useEffect } from "react";
+//import uploadPrizeData from "./UploadPrizeData.tsx";
+//import Curtain from "./assets/Curtain.png";
 
 function App() {
-  const [uploaded, setuploaded] = useState(false);
-
+  //const [uploaded, setuploaded] = useState(false);
+  /*
   useEffect(() => {
     const uploadImage = async () => {
       if (!uploaded) {
@@ -25,7 +25,7 @@ function App() {
     };
 
     uploadImage();
-  }, [uploaded]);
+  }, [uploaded]);*/
 
   return (
     <>
