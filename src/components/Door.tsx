@@ -36,7 +36,6 @@ function Door({ number, onClick, canPickPrize }: DoorProps) {
           </motion.div>
         )}
       </AnimatePresence>
-      {!visible && <div>Prize {number}</div>}
     </>
   );
 }

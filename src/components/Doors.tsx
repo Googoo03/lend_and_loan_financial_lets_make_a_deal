@@ -7,6 +7,8 @@ import Prize from "./Prize";
 function Doors() {
   const [pickPrize, setPickPrize] = useState(false);
   const [pickIndex, setPickIndex] = useState(-1);
+
+  const [prizeNames, setPrizeNames] = useState<string[] | null>(null);
   const [prizeName, setPrizeName] = useState<string | undefined>("");
   const [randomPrize, setRandomPrize] = useState<
     | {
@@ -33,6 +35,14 @@ function Doors() {
 
       if (data.prizes.length > 0) {
         setRandomPrize(data.prizes);
+        setPrizeNames(
+          data.prizes.map((prize: any) =>
+            prize.pathname
+              .split("/")
+              .pop()
+              .replace(/\.[^/.]+$/, "")
+          )
+        );
       }
       console.log("Fetched prizes:", data.blobs);
     }
@@ -99,9 +109,7 @@ function Doors() {
               onClick={() => {
                 setPickPrize(true);
                 setPickIndex(0);
-                setPrizeName(
-                  randomPrize ? randomPrize[1].pathname.split("/").pop() : ""
-                );
+                setPrizeName(prizeNames ? prizeNames[1] : "");
               }}
             />
             {randomPrize && pickPrize && pickIndex === 0 && (
@@ -115,9 +123,7 @@ function Doors() {
               onClick={() => {
                 setPickPrize(true);
                 setPickIndex(1);
-                setPrizeName(
-                  randomPrize ? randomPrize[2].pathname.split("/").pop() : ""
-                );
+                setPrizeName(prizeNames ? prizeNames[2] : "");
               }}
             />
             {randomPrize && pickPrize && pickIndex === 1 && (
@@ -131,9 +137,7 @@ function Doors() {
               onClick={() => {
                 setPickPrize(true);
                 setPickIndex(2);
-                setPrizeName(
-                  randomPrize ? randomPrize[3].pathname.split("/").pop() : ""
-                );
+                setPrizeName(prizeNames ? prizeNames[3] : "");
               }}
             />
             {randomPrize && pickPrize && pickIndex === 2 && (
