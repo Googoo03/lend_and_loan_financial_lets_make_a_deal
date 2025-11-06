@@ -116,7 +116,7 @@ function Doors() {
                 setPickPrize(true);
                 setPickIndex(1);
                 setPrizeName(
-                  randomPrize ? randomPrize[1].pathname.split("/").pop() : ""
+                  randomPrize ? randomPrize[2].pathname.split("/").pop() : ""
                 );
               }}
             />
@@ -132,7 +132,7 @@ function Doors() {
                 setPickPrize(true);
                 setPickIndex(2);
                 setPrizeName(
-                  randomPrize ? randomPrize[1].pathname.split("/").pop() : ""
+                  randomPrize ? randomPrize[3].pathname.split("/").pop() : ""
                 );
               }}
             />
