@@ -14,6 +14,7 @@ export default function Prize() {
       if (data.blobs.length > 0) {
         setRandomPrize(data.blobs[0]);
       }
+      console.log("Fetched prizes:", data.blobs);
     }
 
     fetchRandomPrize();
