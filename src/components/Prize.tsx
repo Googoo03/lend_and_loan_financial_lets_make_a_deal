@@ -10,6 +10,7 @@ export default function Prize() {
     async function fetchRandomPrize() {
       const res = await fetch("/api/prizes/list");
       const data = await res.json();
+      console.log(data);
 
       if (data.blobs.length > 0) {
         setRandomPrize(data.blobs[0]);
