@@ -7,6 +7,7 @@ import Prize from "./Prize";
 function Doors() {
   const [pickPrize, setPickPrize] = useState(false);
   const [pickIndex, setPickIndex] = useState(-1);
+  const [numPickPrizes, setNumPickPrizes] = useState(0);
 
   const [prizeNames, setPrizeNames] = useState<string[] | null>(null);
   const [prizeName, setPrizeName] = useState<string | undefined>("");
@@ -19,8 +20,13 @@ function Doors() {
   >(null);
 
   const navigate = useNavigate();
-  const handleClick = () => {
+
+  //Functions for buttons to determine action
+  const handleKeep = () => {
     navigate("/");
+  };
+  const handlePlay = () => {
+    setPickPrize(false);
   };
 
   function RandomRange(min: number, max: number) {
@@ -38,7 +44,7 @@ function Doors() {
       const res = await fetch("/api/prizes/list");
       const data = await res.json();
       const allowedIndex = [RandomRange(0, data.prizes.length - 1)];
-      const randomIndex = RandomRange(0, 2);
+      const randomIndex = RandomRange(0, 3);
       console.log(data);
 
       if (data.prizes.length > 0) {
@@ -99,8 +105,12 @@ function Doors() {
       console.log("Fetched junk:", data.blobs);
     }
 
-    fetchRandomJunk();
-    fetchRandomPrize();
+    async function fetchPrizesWrapper() {
+      await fetchRandomJunk();
+      await fetchRandomPrize();
+    }
+
+    fetchPrizesWrapper();
     console.log("Prizes names: ", prizeNames);
   }, []);
 
@@ -136,8 +146,8 @@ function Doors() {
             You picked {prizeName}!
           </h1>
           <motion.div
-            initial={{ scale: 1, background: "#FFFFFF" }}
-            whileHover={{ scale: 1.1, background: "#AAAAAA" }}
+            initial={{ scale: 1, background: "#ff831dff" }}
+            whileHover={{ scale: 1.1, background: "#b85107ff" }}
             style={{
               width: "20vw",
               height: "10vh",
@@ -146,12 +156,32 @@ function Doors() {
               flexDirection: "column",
               justifyContent: "center",
               textAlign: "center",
+              margin: "5vh",
             }}
             className={"rounded-3 overflow-hidden"}
-            onClick={handleClick}
+            onClick={handleKeep}
           >
-            Back to Title
+            Keep!
           </motion.div>
+          {numPickPrizes < 3 && (
+            <motion.div
+              initial={{ scale: 1, background: "#FFFFFF" }}
+              whileHover={{ scale: 1.1, background: "#AAAAAA" }}
+              style={{
+                width: "20vw",
+                height: "10vh",
+                background: "#FFFFFF",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                textAlign: "center",
+              }}
+              className={"rounded-3 overflow-hidden"}
+              onClick={handlePlay}
+            >
+              Pick Again!
+            </motion.div>
+          )}
         </motion.div>
       )}
       <div className="container text-center z-index-1">
@@ -163,6 +193,7 @@ function Doors() {
               onClick={() => {
                 setPickPrize(true);
                 setPickIndex(0);
+                setNumPickPrizes(numPickPrizes + 1);
                 setPrizeName(prizeNames ? prizeNames[1] : "");
               }}
             />
@@ -177,6 +208,8 @@ function Doors() {
               onClick={() => {
                 setPickPrize(true);
                 setPickIndex(1);
+
+                setNumPickPrizes(numPickPrizes + 1);
                 setPrizeName(prizeNames ? prizeNames[2] : "");
               }}
             />
@@ -191,6 +224,8 @@ function Doors() {
               onClick={() => {
                 setPickPrize(true);
                 setPickIndex(2);
+
+                setNumPickPrizes(numPickPrizes + 1);
                 setPrizeName(prizeNames ? prizeNames[3] : "");
               }}
             />
