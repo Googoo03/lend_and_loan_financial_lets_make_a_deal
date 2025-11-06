@@ -6,7 +6,7 @@ import Prize from "./Prize";
 
 function Doors() {
   const [pickPrize, setPickPrize] = useState(false);
-  const [pickIndex, setPickIndex] = useState(-1);
+  const [pickIndex, setPickIndex] = useState<boolean[]>([false, false, false]);
   const [numPickPrizes, setNumPickPrizes] = useState(0);
 
   const [prizeNames, setPrizeNames] = useState<string[] | null>(null);
@@ -28,6 +28,13 @@ function Doors() {
   const handlePlay = () => {
     setPickPrize(false);
   };
+  const flipPickIndex = (index: number) => {
+    setPickIndex((prev) => {
+      const indices = prev;
+      indices[index] = true;
+      return indices;
+    });
+  };
 
   function RandomRange(min: number, max: number) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -38,17 +45,17 @@ function Doors() {
   //show whichever one when the door is clicked
   //set prize name accordingly
   useEffect(() => {
-    async function fetchRandomPrize() {
+    async function fetchRandomJunk() {
       if (prizeNames && prizeNames.length > 0) return;
 
-      const res = await fetch("/api/prizes/list");
+      const res = await fetch("/api/junk/list");
       const data = await res.json();
-      const allowedIndex = [RandomRange(0, data.prizes.length - 1)];
+      const allowedIndex = [RandomRange(0, data.junk.length - 1)];
       const randomIndex = RandomRange(0, 3);
       console.log(data);
 
-      if (data.prizes.length > 0) {
-        const newName = data.prizes
+      if (data.junk.length > 0) {
+        const newName = data.junk
           .filter((_: any, index: number) => allowedIndex.includes(index))
           .map((prize: any) =>
             prize.pathname
@@ -67,35 +74,35 @@ function Doors() {
           return names;
         });
       }
-      console.log("Fetched prizes:", data.blobs);
+      console.log("Fetched prizes:", data.junk);
     }
 
-    async function fetchRandomJunk() {
+    async function fetchRandomPrizes() {
       if (prizeNames && prizeNames.length > 0) return;
 
-      const res = await fetch("/api/junk/list");
+      const res = await fetch("/api/prizes/list");
       const data = await res.json();
 
       const allowedIndices = [
-        RandomRange(0, data.junk.length - 1),
-        RandomRange(0, data.junk.length - 1),
-        RandomRange(0, data.junk.length - 1),
+        RandomRange(0, data.prizes.length - 1),
+        RandomRange(0, data.prizes.length - 1),
+        RandomRange(0, data.prizes.length - 1),
       ];
 
       console.log(data);
 
-      if (data.junk.length > 0) {
-        //Set the prize array as junk initially
+      if (data.prizes.length > 0) {
+        //Set the prize array as prizes initially
         setRandomPrize(
-          data.junk.filter((_: any, index: number) =>
+          data.prizes.filter((_: any, index: number) =>
             allowedIndices.includes(index)
           )
         );
         setPrizeNames(
-          data.junk
+          data.prizes
             .filter((_: any, index: number) => allowedIndices.includes(index))
-            .map((junk: any) =>
-              junk.pathname
+            .map((prizes: any) =>
+              prizes.pathname
                 .split("/")
                 .pop()
                 .replace(/\.[^/.]+$/, "")
@@ -106,8 +113,8 @@ function Doors() {
     }
 
     async function fetchPrizesWrapper() {
+      await fetchRandomPrizes();
       await fetchRandomJunk();
-      await fetchRandomPrize();
     }
 
     fetchPrizesWrapper();
@@ -192,12 +199,12 @@ function Doors() {
               canPickPrize={!pickPrize}
               onClick={() => {
                 setPickPrize(true);
-                setPickIndex(0);
+                flipPickIndex(0);
                 setNumPickPrizes(numPickPrizes + 1);
                 setPrizeName(prizeNames ? prizeNames[1] : "");
               }}
             />
-            {randomPrize && pickPrize && pickIndex === 0 && (
+            {randomPrize && pickPrize && pickIndex[0] && (
               <Prize url={randomPrize[1].url} />
             )}
           </div>
@@ -207,13 +214,13 @@ function Doors() {
               canPickPrize={!pickPrize}
               onClick={() => {
                 setPickPrize(true);
-                setPickIndex(1);
+                flipPickIndex(1);
 
                 setNumPickPrizes(numPickPrizes + 1);
                 setPrizeName(prizeNames ? prizeNames[2] : "");
               }}
             />
-            {randomPrize && pickPrize && pickIndex === 1 && (
+            {randomPrize && pickPrize && pickIndex[1] && (
               <Prize url={randomPrize[2].url} />
             )}
           </div>
@@ -223,13 +230,13 @@ function Doors() {
               canPickPrize={!pickPrize}
               onClick={() => {
                 setPickPrize(true);
-                setPickIndex(2);
+                flipPickIndex(2);
 
                 setNumPickPrizes(numPickPrizes + 1);
                 setPrizeName(prizeNames ? prizeNames[3] : "");
               }}
             />
-            {randomPrize && pickPrize && pickIndex === 2 && (
+            {randomPrize && pickPrize && pickIndex[2] && (
               <Prize url={randomPrize[3].url} />
             )}
           </div>
