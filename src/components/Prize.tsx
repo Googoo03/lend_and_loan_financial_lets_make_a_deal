@@ -12,8 +12,8 @@ export default function Prize() {
       const data = await res.json();
       console.log(data);
 
-      if (data.blobs.length > 0) {
-        setRandomPrize(data.blobs[0]);
+      if (data.prizes.length > 0) {
+        setRandomPrize(data.prizes[1]);
       }
       console.log("Fetched prizes:", data.blobs);
     }
