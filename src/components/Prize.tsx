@@ -7,11 +7,7 @@ export default function Prize({ url }: PrizeProps) {
 
   return (
     <div className="rounded-3 overflow-hidden d-inline-block">
-      <img
-        src={url}
-        alt="Random prize"
-        className="w-40 h-40 object-cover rounded-lg mb-3"
-      />
+      <img className="img-fluid" src={url} alt="Random prize" />
     </div>
   );
 }
