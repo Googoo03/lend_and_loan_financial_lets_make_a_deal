@@ -38,6 +38,7 @@ function Doors() {
       const res = await fetch("/api/prizes/list");
       const data = await res.json();
       const allowedIndex = [RandomRange(0, data.prizes.length - 1)];
+      const randomIndex = RandomRange(0, 2);
       console.log(data);
 
       if (data.prizes.length > 0) {
@@ -49,10 +50,14 @@ function Doors() {
               .pop()
               .replace(/\.[^/.]+$/, "")
           );
-        setRandomPrize(data.prizes);
+        setRandomPrize((prev) => {
+          const names = prev;
+          if (names) names[randomIndex] = newName;
+          return names;
+        });
         setPrizeNames((prev) => {
           const names = prev;
-          if (names) names[RandomRange(0, 2)] = newName;
+          if (names) names[randomIndex] = newName;
           return names;
         });
       }
@@ -74,7 +79,12 @@ function Doors() {
       console.log(data);
 
       if (data.junk.length > 0) {
-        setRandomPrize(data.junk);
+        //Set the prize array as junk initially
+        setRandomPrize(
+          data.junk.filter((_: any, index: number) =>
+            allowedIndices.includes(index)
+          )
+        );
         setPrizeNames(
           data.junk
             .filter((_: any, index: number) => allowedIndices.includes(index))
