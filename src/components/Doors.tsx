@@ -23,31 +23,75 @@ function Doors() {
     navigate("/");
   };
 
+  function RandomRange(min: number, max: number) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
   const pickPrizeTransition = { delay: 2 };
   //Define the 3 prizes
   //show whichever one when the door is clicked
   //set prize name accordingly
   useEffect(() => {
     async function fetchRandomPrize() {
+      if (prizeNames && prizeNames.length > 0) return;
+
       const res = await fetch("/api/prizes/list");
       const data = await res.json();
+      const allowedIndex = [RandomRange(0, data.prizes.length - 1)];
       console.log(data);
 
       if (data.prizes.length > 0) {
-        setRandomPrize(data.prizes);
-        setPrizeNames(
-          data.prizes.map((prize: any) =>
+        const newName = data.prizes
+          .filter((_: any, index: number) => allowedIndex.includes(index))
+          .map((prize: any) =>
             prize.pathname
               .split("/")
               .pop()
               .replace(/\.[^/.]+$/, "")
-          )
-        );
+          );
+        setRandomPrize(data.prizes);
+        setPrizeNames((prev) => {
+          const names = prev;
+          if (names) names[RandomRange(0, 2)] = newName;
+          return names;
+        });
       }
       console.log("Fetched prizes:", data.blobs);
     }
 
+    async function fetchRandomJunk() {
+      if (prizeNames && prizeNames.length > 0) return;
+
+      const res = await fetch("/api/junk/list");
+      const data = await res.json();
+
+      const allowedIndices = [
+        RandomRange(0, data.junk.length - 1),
+        RandomRange(0, data.junk.length - 1),
+        RandomRange(0, data.junk.length - 1),
+      ];
+
+      console.log(data);
+
+      if (data.junk.length > 0) {
+        setRandomPrize(data.junk);
+        setPrizeNames(
+          data.junk
+            .filter((_: any, index: number) => allowedIndices.includes(index))
+            .map((junk: any) =>
+              junk.pathname
+                .split("/")
+                .pop()
+                .replace(/\.[^/.]+$/, "")
+            )
+        );
+      }
+      console.log("Fetched junk:", data.blobs);
+    }
+
+    fetchRandomJunk();
     fetchRandomPrize();
+    console.log("Prizes names: ", prizeNames);
   }, []);
 
   return (
