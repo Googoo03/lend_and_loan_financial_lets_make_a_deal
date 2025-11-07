@@ -19,6 +19,8 @@ function Doors() {
     | null
   >(null);
 
+  const [loading, setLoading] = useState(true);
+
   const navigate = useNavigate();
 
   //Functions for buttons to determine action
@@ -120,6 +122,7 @@ function Doors() {
     async function fetchPrizesWrapper() {
       await fetchRandomPrizes();
       await fetchRandomJunk();
+      await setLoading(false);
     }
 
     fetchPrizesWrapper();
@@ -128,6 +131,35 @@ function Doors() {
 
   return (
     <>
+      {loading && (
+        <motion.div
+          style={{
+            position: "fixed", // 👈 stays in same place even when scrolling
+            top: 0,
+            left: 0,
+            width: "100vw",
+            height: "100dvh",
+            background: "rgba(0, 0, 0, 0.5)", // semi-transparent backdrop
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            zIndex: 9999, // 👈 ensures it's above everything
+          }}
+        >
+          <h1
+            style={{
+              color: "#FFFFFF",
+              display: "block",
+              width: "100%",
+              textAlign: "center",
+            }}
+          >
+            Loading...
+          </h1>
+        </motion.div>
+      )}
+
       {pickPrize && (
         <motion.div
           style={{
