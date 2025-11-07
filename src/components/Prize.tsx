@@ -4,6 +4,8 @@ interface PrizeProps {
   url: string;
 }
 
+const pickPrizeTransition = { delay: 2 };
+
 export default function Prize({ url }: PrizeProps) {
   if (!url) return <p>Loading...</p>;
 
@@ -13,6 +15,7 @@ export default function Prize({ url }: PrizeProps) {
         initial={{ scale: 0 }}
         animate={{ scale: 1 }}
         style={{ height: "100%" }}
+        transition={pickPrizeTransition}
         className="rounded-3 overflow-hidden d-inline-block"
       >
         <img className="img-fluid" src={url} alt="Random prize" />

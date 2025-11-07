@@ -40,7 +40,7 @@ function Doors() {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
-  const pickPrizeTransition = { delay: 2 };
+  const pickPrizeTransition = { delay: 3 };
   //Define the 3 prizes
   //show whichever one when the door is clicked
   //set prize name accordingly
@@ -48,8 +48,8 @@ function Doors() {
     async function fetchRandomJunk() {
       const res = await fetch("/api/junk/list");
       const data = await res.json();
-      const allowedIndex = [RandomRange(0, data.junk.length - 1)];
-      const randomIndex = RandomRange(0, 3);
+      const allowedIndex = [RandomRange(1, data.junk.length - 1)];
+      const randomIndex = RandomRange(0, 2);
       console.log(data);
 
       if (data.junk.length > 0) {
