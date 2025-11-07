@@ -89,9 +89,9 @@ function Doors() {
       const data = await res.json();
 
       const allowedIndices = [
-        RandomRange(0, data.prizes.length - 1),
-        RandomRange(0, data.prizes.length - 1),
-        RandomRange(0, data.prizes.length - 1),
+        RandomRange(1, data.prizes.length - 1),
+        RandomRange(1, data.prizes.length - 1),
+        RandomRange(1, data.prizes.length - 1),
       ];
 
       console.log(data);
