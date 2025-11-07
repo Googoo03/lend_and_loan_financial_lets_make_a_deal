@@ -46,8 +46,6 @@ function Doors() {
   //set prize name accordingly
   useEffect(() => {
     async function fetchRandomJunk() {
-      if (prizeNames && prizeNames.length > 0) return;
-
       const res = await fetch("/api/junk/list");
       const data = await res.json();
       const allowedIndex = [RandomRange(0, data.junk.length - 1)];
@@ -201,7 +199,7 @@ function Doors() {
                 setPickPrize(true);
                 flipPickIndex(0);
                 setNumPickPrizes(numPickPrizes + 1);
-                setPrizeName(prizeNames ? prizeNames[1] : "");
+                setPrizeName(prizeNames ? prizeNames[0] : "");
               }}
             />
             {randomPrize && pickIndex[0] && <Prize url={randomPrize[0].url} />}
@@ -215,7 +213,7 @@ function Doors() {
                 flipPickIndex(1);
 
                 setNumPickPrizes(numPickPrizes + 1);
-                setPrizeName(prizeNames ? prizeNames[2] : "");
+                setPrizeName(prizeNames ? prizeNames[1] : "");
               }}
             />
             {randomPrize && pickIndex[1] && <Prize url={randomPrize[1].url} />}
@@ -229,7 +227,7 @@ function Doors() {
                 flipPickIndex(2);
 
                 setNumPickPrizes(numPickPrizes + 1);
-                setPrizeName(prizeNames ? prizeNames[3] : "");
+                setPrizeName(prizeNames ? prizeNames[2] : "");
               }}
             />
             {randomPrize && pickIndex[2] && <Prize url={randomPrize[2].url} />}
