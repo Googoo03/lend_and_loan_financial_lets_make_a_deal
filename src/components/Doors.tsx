@@ -61,7 +61,7 @@ function Doors() {
         //Change the prize to junk
         setRandomPrize((prev) => {
           const newJunk = prev;
-          if (newJunk) newJunk[randomIndex] = filteredJunk;
+          if (newJunk) newJunk[randomIndex] = filteredJunk[0];
           return newJunk;
         });
 
