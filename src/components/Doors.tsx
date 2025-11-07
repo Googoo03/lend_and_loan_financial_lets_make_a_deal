@@ -56,6 +56,15 @@ function Doors() {
         const filteredJunk = data.junk.filter((_: any, index: number) =>
           allowedIndex.includes(index)
         );
+        console.log("Filtered junk: ", filteredJunk);
+
+        //Change the prize to junk
+        setRandomPrize((prev) => {
+          const newJunk = prev;
+          if (newJunk) newJunk[randomIndex] = filteredJunk;
+          return newJunk;
+        });
+
         const filteredJunkName = filteredJunk.map((junk: any) =>
           junk.pathname
             .split("/")
@@ -63,11 +72,7 @@ function Doors() {
             .replace(/\.[^/.]+$/, "")
         );
 
-        setRandomPrize((prev) => {
-          const names = prev;
-          if (names) names[randomIndex] = filteredJunk;
-          return names;
-        });
+        //Change the name accordingly
         setPrizeNames((prev) => {
           const names = prev;
           if (names) names[randomIndex] = filteredJunkName;
