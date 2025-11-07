@@ -4,7 +4,7 @@ interface PrizeProps {
   url: string;
 }
 
-const pickPrizeTransition = { delay: 2 };
+const pickPrizeTransition = { delay: 1 };
 
 export default function Prize({ url }: PrizeProps) {
   if (!url) return <p>Loading...</p>;

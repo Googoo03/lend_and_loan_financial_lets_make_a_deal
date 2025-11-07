@@ -40,7 +40,7 @@ function Doors() {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
-  const pickPrizeTransition = { delay: 3 };
+  const pickPrizeTransition = { delay: 2 };
   //Define the 3 prizes
   //show whichever one when the door is clicked
   //set prize name accordingly
@@ -53,22 +53,24 @@ function Doors() {
       console.log(data);
 
       if (data.junk.length > 0) {
-        const newName = data.junk
-          .filter((_: any, index: number) => allowedIndex.includes(index))
-          .map((prize: any) =>
-            prize.pathname
-              .split("/")
-              .pop()
-              .replace(/\.[^/.]+$/, "")
-          );
+        const filteredJunk = data.junk.filter((_: any, index: number) =>
+          allowedIndex.includes(index)
+        );
+        const filteredJunkName = filteredJunk.map((junk: any) =>
+          junk.pathname
+            .split("/")
+            .pop()
+            .replace(/\.[^/.]+$/, "")
+        );
+
         setRandomPrize((prev) => {
           const names = prev;
-          if (names) names[randomIndex] = newName;
+          if (names) names[randomIndex] = filteredJunk;
           return names;
         });
         setPrizeNames((prev) => {
           const names = prev;
-          if (names) names[randomIndex] = newName;
+          if (names) names[randomIndex] = filteredJunkName;
           return names;
         });
       }
